@@ -1,0 +1,27 @@
+{
+  "name": "take-home-hernan",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ./src/app.js",
+    "start": "node ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HernanEstribou/take-home-hernan.git"
+  },
+  "author": "Hernán Estribou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HernanEstribou/take-home-hernan/issues"
+  },
+  "homepage": "https://github.com/HernanEstribou/take-home-hernan#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
