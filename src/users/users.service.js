@@ -18,8 +18,8 @@ const createNewUser = (user) => {
   return response;
 };
 
-const updateOneUser = (id) => {
-  const response = userRepository.updateOneUser(id);
+const updateOneUser = (id, userDto) => {
+  const response = userRepository.updateOneUser(id, userDto);
 
   return response;
 };
