@@ -21,7 +21,8 @@
   "homepage": "https://github.com/HernanEstribou/take-home-hernan#readme",
   "description": "",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "joi": "^17.13.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

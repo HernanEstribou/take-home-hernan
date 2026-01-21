@@ -1,7 +1,29 @@
+import Joi from 'joi';
+
 class UpdateUserDto {
   constructor(user = {}) {
-    if (user.email !== undefined) this.email = user.email;
-    if (user.password !== undefined) this.password = user.password;
+    this.email = user.email;
+    this.password = user.password;
+  }
+
+  static userSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).required(),
+  });
+
+  validate() {
+    const { error } = UpdateUserDto.userSchema.validate(
+      {
+        email: this.email,
+        password: this.password,
+      },
+      { abortEarly: false },
+    );
+
+    return {
+      valid: !error,
+      errors: error ? error.details.map((detail) => detail.message) : [],
+    };
   }
 }
 

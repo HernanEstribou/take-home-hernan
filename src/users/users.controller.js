@@ -1,10 +1,13 @@
 import express from 'express';
+import Joi from 'joi';
 import * as usersService from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UserResponseDto } from './dto/user-response.dto.js';
 
 const router = express.Router();
+
+const idSchema = Joi.number().integer().positive().required();
 
 // Ruta: GET /users
 router.get('/', async (req, res) => {
@@ -23,6 +26,11 @@ router.get('/', async (req, res) => {
 // Ruta: GET /users
 router.get('/:id', async (req, res) => {
   try {
+    const { error } = idSchema.validate(req.params.id);
+    if (error) {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
+
     const user = await usersService.getOneUser(req.params.id);
     const userDto = new UserResponseDto(user);
 
@@ -38,6 +46,16 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const userDto = new CreateUserDto(req.body);
+
+    const validation = userDto.validate();
+
+    if (!validation.valid) {
+      return res.status(400).json({
+        message: 'Validation failed',
+        errors: validation.errors,
+      });
+    }
+
     const user = await usersService.createNewUser(userDto);
     const userResponseDto = new UserResponseDto(user);
 
@@ -52,7 +70,21 @@ router.post('/', async (req, res) => {
 // Ruta: PUT /users
 router.put('/:id', async (req, res) => {
   try {
+    const { error } = idSchema.validate(req.params.id);
+    if (error) {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
+
     const userDto = new UpdateUserDto(req.body);
+
+    const validation = userDto.validate();
+
+    if (!validation.valid) {
+      return res.status(400).json({
+        message: 'Validation failed',
+        errors: validation.errors,
+      });
+    }
     const user = await usersService.updateOneUser(req.params.id, userDto);
 
     if (!user) {
@@ -72,6 +104,11 @@ router.put('/:id', async (req, res) => {
 //Ruta: DELETE /users
 router.delete('/:id', async (req, res) => {
   try {
+    const { error } = idSchema.validate(req.params.id);
+    if (error) {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
+
     const user = await usersService.deleteOneUser(req.params.id);
 
     if (!user) {
