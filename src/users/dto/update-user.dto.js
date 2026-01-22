@@ -6,6 +6,13 @@ class UpdateUserDto {
     this.password = user.password;
   }
 
+  static swaggerSchema() {
+    return {
+      email: 'updated@example.com',
+      password: 'newpassword123',
+    };
+  }
+
   static userSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
