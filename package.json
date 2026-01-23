@@ -22,6 +22,7 @@
   "homepage": "https://github.com/HernanEstribou/take-home-hernan#readme",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.19.2",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "joi": "^17.13.3",
@@ -36,6 +37,7 @@
     "globals": "^17.0.0",
     "nodemon": "^3.1.11",
     "prettier": "^3.8.0",
+    "prisma": "^6.19.2",
     "swagger-autogen": "^2.23.7"
   }
 }

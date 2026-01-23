@@ -1,36 +1,70 @@
-import { query } from '../config/database.js';
+import { prisma } from '../config/prisma.js';
 
 const getAllUsers = async () => {
-  const result = await query('SELECT * FROM users');
-  return result.rows;
+  const users = await prisma.user.findMany();
+  return users;
 };
 
 const getOneUser = async (id) => {
-  const result = await query('SELECT * FROM users WHERE id = $1', [id]);
-  return result.rows[0];
+  const user = await prisma.user.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+
+  return user;
 };
 
 const createNewUser = async (user) => {
-  const result = await query(
-    'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
-    [user.email, user.password],
-  );
-  return result.rows[0];
+  const newUser = await prisma.user.create({
+    data: {
+      email: user.email,
+      password: user.password,
+    },
+  });
+
+  return newUser;
 };
 
 const updateOneUser = async (id, userDto) => {
-  const result = await query(
-    'UPDATE users SET email = $1, password = $2 WHERE id = $3 RETURNING *',
-    [userDto.email, userDto.password, id],
-  );
-  return result.rows[0];
+  const userIdInt = parseInt(id);
+
+  const existingUser = await prisma.user.findUnique({
+    where: { id: userIdInt },
+  });
+
+  if (!existingUser) {
+    return null;
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: userIdInt,
+    },
+    data: userDto,
+  });
+
+  return updatedUser;
 };
 
 const deleteOneUser = async (id) => {
-  const result = await query('DELETE FROM users WHERE id = $1 RETURNING *', [
-    id,
-  ]);
-  return result.rows[0];
+  const userIdInt = parseInt(id);
+
+  const existingUser = await prisma.user.findUnique({
+    where: { id: userIdInt },
+  });
+
+  if (!existingUser) {
+    return null;
+  }
+
+  const deletedUser = await prisma.user.delete({
+    where: {
+      id: userIdInt,
+    },
+  });
+
+  return deletedUser;
 };
 
 export { getAllUsers, getOneUser, createNewUser, updateOneUser, deleteOneUser };

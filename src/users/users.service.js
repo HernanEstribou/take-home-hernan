@@ -6,9 +6,8 @@ const getAllUsers = () => {
   return response;
 };
 
-const getOneUser = (id) => {
-  const response = userRepository.getOneUser(id);
-
+const getOneUser = async (id) => {
+  const response = await userRepository.getOneUser(id);
   return response;
 };
 
@@ -18,15 +17,13 @@ const createNewUser = (user) => {
   return response;
 };
 
-const updateOneUser = (id, userDto) => {
-  const response = userRepository.updateOneUser(id, userDto);
-
+const updateOneUser = async (id, userDto) => {
+  const response = await userRepository.updateOneUser(id, userDto);
   return response;
 };
 
-const deleteOneUser = (id) => {
-  const response = userRepository.deleteOneUser(id);
-
+const deleteOneUser = async (id) => {
+  const response = await userRepository.deleteOneUser(id);
   return response;
 };
 

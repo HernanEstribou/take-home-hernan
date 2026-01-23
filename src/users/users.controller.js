@@ -40,6 +40,11 @@ router.get('/:id', async (req, res) => {
     }
 
     const user = await usersService.getOneUser(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     const userDto = new UserResponseDto(user);
 
     res.status(200).json(userDto);
