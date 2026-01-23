@@ -1,51 +1,36 @@
-const getAllUsers = () => {
-  const response = [
-    { id: 1, email: 'user1@example.com', password: 'hashedPassword123' },
-    { id: 2, email: 'user2@example.com', password: 'hashedPassword456' },
-    { id: 3, email: 'user3@example.com', password: 'hashedPassword789' },
-  ];
+import { query } from '../config/database.js';
 
-  return response;
+const getAllUsers = async () => {
+  const result = await query('SELECT * FROM users');
+  return result.rows;
 };
 
-const getOneUser = (id) => {
-  const response = {
-    id: parseInt(id),
-    email: `user${id}@example.com`,
-    password: 'hashedPassword123',
-  };
-
-  return response;
+const getOneUser = async (id) => {
+  const result = await query('SELECT * FROM users WHERE id = $1', [id]);
+  return result.rows[0];
 };
 
-const createNewUser = (user) => {
-  const response = {
-    id: Math.floor(Math.random() * 1000) + 4,
-    email: user.email,
-    password: user.password,
-  };
-
-  return response;
+const createNewUser = async (user) => {
+  const result = await query(
+    'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
+    [user.email, user.password],
+  );
+  return result.rows[0];
 };
 
-const updateOneUser = (id, userDto) => {
-  const response = {
-    id: parseInt(id),
-    email: userDto.email || `user${id}@example.com`,
-    password: userDto.password || 'hashedPassword123',
-  };
-
-  return response;
+const updateOneUser = async (id, userDto) => {
+  const result = await query(
+    'UPDATE users SET email = $1, password = $2 WHERE id = $3 RETURNING *',
+    [userDto.email, userDto.password, id],
+  );
+  return result.rows[0];
 };
 
-const deleteOneUser = (id) => {
-  const response = {
-    id: parseInt(id),
-    email: `user${id}@example.com`,
-    password: 'hashedPassword123',
-  };
-
-  return response;
+const deleteOneUser = async (id) => {
+  const result = await query('DELETE FROM users WHERE id = $1 RETURNING *', [
+    id,
+  ]);
+  return result.rows[0];
 };
 
 export { getAllUsers, getOneUser, createNewUser, updateOneUser, deleteOneUser };

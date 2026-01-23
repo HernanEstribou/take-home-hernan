@@ -22,8 +22,10 @@
   "homepage": "https://github.com/HernanEstribou/take-home-hernan#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "joi": "^17.13.3",
+    "pg": "^8.17.2",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {

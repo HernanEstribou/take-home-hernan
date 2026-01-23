@@ -1,7 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
 import usersRouter from './users/users.controller.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocumentation from './swagger/swagger.json' with { type: 'json' };
+import './config/database.js';
 
 const app = express();
 const port = 3000;
