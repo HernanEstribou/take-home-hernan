@@ -17,4 +17,13 @@ export default defineConfig([
       'prettier/prettier': 'error',
     },
   },
+  {
+    files: ['**/*.spec.js', '**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
+    },
+  },
 ]);

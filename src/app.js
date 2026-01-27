@@ -13,6 +13,11 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocumentation));
 app.use('/users', usersRouter);
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-});
+// Solo iniciar el servidor si no estamos en modo test
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+  });
+}
+
+export default app;
