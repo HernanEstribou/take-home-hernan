@@ -1,6 +1,29 @@
 services:
+  server:
+    build:
+      context: .
+      args:
+        DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@production-db:5432/${DB_NAME}
+    container_name: users-api
+    environment:
+      NODE_ENV: production
+      PORT: 5173
+      DB_HOST: production-db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@production-db:5432/${DB_NAME}
+    ports:
+      - 5173:5173
+    depends_on:
+      production-db:
+        condition: service_started
+    restart: unless-stopped
+
   production-db:
     image: postgres:14.20-trixie
+    container_name: production-postgres
     shm_size: 256mb
     ports:
       - ${DB_PORT}:5432
@@ -14,13 +37,14 @@ services:
 
   test-db:
     image: postgres:14.20-trixie
+    container_name: test-postgres
     shm_size: 256mb
     ports:
       - 5433:5432
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: test
+      POSTGRES_USER: ${TEST_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${TEST_DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${TEST_DB_NAME:-test}
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
     restart: unless-stopped

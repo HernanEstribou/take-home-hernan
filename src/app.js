@@ -1,3 +1,4 @@
+import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import usersRouter from './users/users.controller.js';
@@ -6,9 +7,10 @@ import swaggerDocumentation from './swagger/swagger.json' with { type: 'json' };
 import './config/database.js';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocumentation));
 app.use('/users', usersRouter);
