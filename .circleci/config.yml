@@ -27,7 +27,7 @@ jobs:
           command: npx prisma generate
           name: Generate Prisma Client
       - run:
-          command: npm run test:cov
+          command: COVERALLS_REPO_TOKEN=mY2b1uEef1YzO5FpNjxm4DfCcRgeEcJGm npm run test:cov
           name: Run tests with coverage
       - coveralls/upload
 workflows:
