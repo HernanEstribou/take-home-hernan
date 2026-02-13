@@ -4,6 +4,10 @@
 
 The system allows each user to manage and send notifications through various channels.
 
+## Badges
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/HernanEstribou/take-home-hernan/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/HernanEstribou/take-home-hernan/tree/master)
+
 ## Features
 
 ### 1. User Authentication
