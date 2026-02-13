@@ -27,8 +27,9 @@ jobs:
           command: npx prisma generate
           name: Generate Prisma Client
       - run:
-          command: npm run test
-          name: Run tests
+          command: npm run test:cov
+          name: Run tests with coverage
+      - coveralls/upload
 workflows:
   build_test:
     jobs:
