@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "start": "node ./src/app.js",
+    "heroku-postbuild": "prisma generate && prisma migrate deploy",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "swagger": "node ./src/swagger/swagger.js",
