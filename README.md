@@ -4,6 +4,10 @@
 
 The system allows each user to manage and send notifications through various channels.
 
+## App running on Heroku
+
+- [SWAGGER](https://take-home-hernan-436970d63328.herokuapp.com/api-docs/)
+
 ## Badges
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/HernanEstribou/take-home-hernan/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/HernanEstribou/take-home-hernan/tree/master)
