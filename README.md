@@ -8,6 +8,8 @@ The system allows each user to manage and send notifications through various cha
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/HernanEstribou/take-home-hernan/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/HernanEstribou/take-home-hernan/tree/master)
 
+[![Coverage Status](https://coveralls.io/repos/github/HernanEstribou/take-home-hernan/badge.svg)](https://coveralls.io/github/HernanEstribou/take-home-hernan)
+
 ## Features
 
 ### 1. User Authentication
