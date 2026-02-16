@@ -9,6 +9,9 @@ import './config/database.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Trust proxy - required for Heroku to detect HTTPS correctly
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(cors());
 
