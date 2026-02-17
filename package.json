@@ -9,12 +9,18 @@
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "start": "node ./src/app.js",
-    "heroku-postbuild": "prisma generate && prisma migrate deploy",
+    "heroku-postbuild": "prisma generate && prisma migrate deploy && prisma db seed",
+    "seed": "node prisma/seed.js",
+    "docker:dev": "docker compose up --build",
+    "docker:dev:down": "docker compose down",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "swagger": "node ./src/swagger/swagger.js",
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
     "test:cov": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --coverage --runInBand"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "repository": {
     "type": "git",
