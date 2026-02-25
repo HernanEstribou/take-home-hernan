@@ -1,0 +1,31 @@
+services:
+  test-runner:
+    build:
+      context: .
+      target: test
+      args:
+        DATABASE_URL: postgresql://${TEST_DB_USER:-postgres}:${TEST_DB_PASSWORD:-postgres}@test-db:5432/${TEST_DB_NAME:-test}
+    container_name: test-runner
+    environment:
+      NODE_ENV: test
+      PORT: 3000
+      DATABASE_URL: postgresql://${TEST_DB_USER:-postgres}:${TEST_DB_PASSWORD:-postgres}@test-db:5432/${TEST_DB_NAME:-test}
+      TEST_DB_HOST: test-db
+      TEST_DB_PORT: 5432
+      TEST_DB_USER: ${TEST_DB_USER:-postgres}
+      TEST_DB_PASSWORD: ${TEST_DB_PASSWORD:-postgres}
+      TEST_DB_NAME: ${TEST_DB_NAME:-test}
+    command: npm run test
+    depends_on:
+      - test-db
+
+  test-db:
+    image: postgres:14.20-trixie
+    container_name: test-db
+    shm_size: 256mb
+    environment:
+      POSTGRES_USER: ${TEST_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${TEST_DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${TEST_DB_NAME:-test}
+    ports:
+      - '${TEST_DB_PORT:-5433}:5432'

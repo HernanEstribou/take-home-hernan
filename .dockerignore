@@ -31,10 +31,7 @@
 **/values.dev.yaml
 **/build
 **/dist
-**/test
 **/coverage
-*.test.js
-*.spec.js
 LICENSE
 README.md
 CHANGELOG.md
