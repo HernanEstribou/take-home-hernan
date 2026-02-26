@@ -1,4 +1,7 @@
 import * as userRepository from './users.repository.js';
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
 
 const getAllUsers = () => {
   const response = userRepository.getAllUsers();
@@ -11,14 +14,22 @@ const getOneUser = async (id) => {
   return response;
 };
 
-const createNewUser = (user) => {
-  const response = userRepository.createNewUser(user);
+const createNewUser = async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
+  const response = await userRepository.createNewUser({
+    ...user,
+    password: hashedPassword,
+  });
 
   return response;
 };
 
 const updateOneUser = async (id, userDto) => {
-  const response = await userRepository.updateOneUser(id, userDto);
+  const hashedPassword = await bcrypt.hash(userDto.password, SALT_ROUNDS);
+  const response = await userRepository.updateOneUser(id, {
+    ...userDto,
+    password: hashedPassword,
+  });
   return response;
 };
 
