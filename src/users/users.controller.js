@@ -4,13 +4,14 @@ import * as usersService from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UserResponseDto } from './dto/user-response.dto.js';
+import { authenticate } from '../auth/auth.middleware.js';
 
 const router = express.Router();
 
 const idSchema = Joi.number().integer().positive().required();
 
 // Ruta: GET /users
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Get all users'
   // #swagger.description = 'Retrieves a list of all users from the database'
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
 });
 
 // Ruta: GET /users/:id
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Get user by ID'
   // #swagger.description = 'Retrieves a specific user by their ID'
@@ -93,7 +94,7 @@ router.post('/', async (req, res) => {
 });
 
 // Ruta: PUT /users/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Update a user'
   // #swagger.description = 'Updates an existing user with new email and password'
@@ -139,7 +140,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //Ruta: DELETE /users/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Delete a user'
   // #swagger.description = 'Deletes a user by their ID'

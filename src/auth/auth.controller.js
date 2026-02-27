@@ -4,7 +4,7 @@ import * as authService from './auth.service.js';
 
 const router = express.Router();
 
-const login = async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -25,8 +25,6 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
   return res.status(200).json({ token });
-};
-
-router.post('/login', login);
+});
 
 export default router;
