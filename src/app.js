@@ -1,8 +1,9 @@
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
-import usersRouter from './users/users.controller.js';
 import authRouter from './auth/auth.controller.js';
+import usersRouter from './users/users.controller.js';
+import notificationsRouter from './notifications/notifications.controller.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocumentation from './swagger/swagger.json' with { type: 'json' };
 import './config/database.js';
@@ -28,8 +29,9 @@ app.use('/api-docs', swaggerUi.serve, (req, res, next) => {
   swaggerUi.setup(swaggerDoc)(req, res, next);
 });
 
-app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/users', usersRouter);
+app.use('/notifications', notificationsRouter);
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {

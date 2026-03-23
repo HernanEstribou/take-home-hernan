@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
-const getAllUsers = () => {
-  const response = userRepository.getAllUsers();
+const getAllUsers = async () => {
+  const response = await userRepository.getAllUsers();
 
   return response;
 };

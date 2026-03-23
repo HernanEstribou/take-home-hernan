@@ -129,9 +129,16 @@ router.put('/:id', authenticate, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    if (user.id !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
     const userResponseDto = new UserResponseDto(user);
 
-    res.status(200).json(userResponseDto);
+    res.status(200).json({
+      message: 'User updated',
+      data: userResponseDto,
+    });
   } catch (error) {
     res
       .status(500)
@@ -157,9 +164,16 @@ router.delete('/:id', authenticate, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    if (user.id !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
     const userResponseDto = new UserResponseDto(user);
 
-    res.status(200).json(userResponseDto);
+    res.status(200).json({
+      message: 'User deleted',
+      data: userResponseDto,
+    });
   } catch (error) {
     res
       .status(500)

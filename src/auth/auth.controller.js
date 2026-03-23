@@ -9,7 +9,7 @@ router.post('/login', async (req, res) => {
 
   if (!email || !password) {
     return res.status(400).json({
-      error: 'Ingrese usuario y contraseña',
+      error: 'Email and password are required',
     });
   }
 
@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
 
   if (!user) {
     return res.status(401).json({
-      error: 'Credenciales inválidas',
+      error: 'Invalid credentials',
     });
   }
 
