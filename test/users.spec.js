@@ -1,9 +1,15 @@
 import request from 'supertest';
 import app from '../src/app.js';
 import { describe, test, expect, beforeEach } from '@jest/globals';
-import { cleanDatabase, createTestUsers } from './helpers.js';
+import {
+  cleanDatabase,
+  createTestUsers,
+  generateTestToken,
+} from './helpers.js';
 
 describe('GET /users', () => {
+  let authToken;
+
   beforeEach(async () => {
     await cleanDatabase();
 
@@ -14,12 +20,16 @@ describe('GET /users', () => {
       { email: 'juan@gmail.com', password: '9874asdf' },
     ];
 
-    await Promise.all(testUsers.map((user) => createTestUsers(user)));
+    const createdUsers = await Promise.all(
+      testUsers.map((user) => createTestUsers(user)),
+    );
+    authToken = generateTestToken(createdUsers[0]);
   });
 
   test('should return 200 and an array of users', async () => {
     const response = await request(app)
       .get('/users')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect('Content-Type', /json/);
 
@@ -35,6 +45,7 @@ describe('GET /users', () => {
 
 describe('GET /users/:id', () => {
   let createdUser;
+  let authToken;
 
   beforeEach(async () => {
     await cleanDatabase();
@@ -45,11 +56,13 @@ describe('GET /users/:id', () => {
     };
 
     createdUser = await createTestUsers(userData);
+    authToken = generateTestToken(createdUser);
   });
 
   test('should return 200 and user data with id and email', async () => {
     const response = await request(app)
       .get(`/users/${createdUser.id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect('Content-Type', /json/);
 
@@ -67,6 +80,7 @@ describe('GET /users/:id', () => {
     const nonExistentId = createdUser.id + 1000;
     const response = await request(app)
       .get(`/users/${nonExistentId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404)
       .expect('Content-Type', /json/);
 
@@ -76,6 +90,7 @@ describe('GET /users/:id', () => {
   test('should return 400 when ID format is invalid', async () => {
     const response = await request(app)
       .get('/users/abc')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(400)
       .expect('Content-Type', /json/);
 
@@ -85,6 +100,7 @@ describe('GET /users/:id', () => {
   test('should return 400 when ID is negative', async () => {
     const response = await request(app)
       .get('/users/-1')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(400)
       .expect('Content-Type', /json/);
 
@@ -149,6 +165,8 @@ describe('POST /users', () => {
 describe('PUT /users/:id', () => {
   let createdUser;
   let updatedUser;
+  let authToken;
+
   beforeEach(async () => {
     await cleanDatabase();
 
@@ -163,24 +181,27 @@ describe('PUT /users/:id', () => {
     };
 
     createdUser = await createTestUsers(user);
+    authToken = generateTestToken(createdUser);
   });
 
   test('should return 200 and update user with new data', async () => {
     const response = await request(app)
       .put(`/users/${createdUser.id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedUser)
       .expect(200)
       .expect('Content-Type', /json/);
 
-    expect(response.body).toHaveProperty('id', createdUser.id);
-    expect(response.body).toHaveProperty('email', updatedUser.email);
-    expect(response.body).not.toHaveProperty('password');
+    expect(response.body.data).toHaveProperty('id', createdUser.id);
+    expect(response.body.data).toHaveProperty('email', updatedUser.email);
+    expect(response.body.data).not.toHaveProperty('password');
   });
 
   test('should return 404 when user does not exist', async () => {
     const nonExistentId = createdUser.id + 1000;
     const response = await request(app)
       .put(`/users/${nonExistentId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedUser)
       .expect(404)
       .expect('Content-Type', /json/);
@@ -195,6 +216,7 @@ describe('PUT /users/:id', () => {
 
     const response = await request(app)
       .put(`/users/${createdUser.id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(invalidData)
       .expect(400);
 
@@ -205,6 +227,8 @@ describe('PUT /users/:id', () => {
 
 describe('DELETE /users/:id', () => {
   let createdUser;
+  let authToken;
+
   beforeEach(async () => {
     await cleanDatabase();
 
@@ -214,26 +238,32 @@ describe('DELETE /users/:id', () => {
     };
 
     createdUser = await createTestUsers(user);
+    authToken = generateTestToken(createdUser);
   });
 
   test('should return 200 and delete the user', async () => {
     const response = await request(app)
       .delete(`/users/${createdUser.id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect('Content-Type', /json/);
 
-    expect(response.body).toHaveProperty('id', createdUser.id);
-    expect(response.body).toHaveProperty('email', createdUser.email);
-    expect(response.body).not.toHaveProperty('password');
+    expect(response.body.data).toHaveProperty('id', createdUser.id);
+    expect(response.body.data).toHaveProperty('email', createdUser.email);
+    expect(response.body.data).not.toHaveProperty('password');
 
     // Verify user was actually deleted
-    await request(app).get(`/users/${createdUser.id}`).expect(404);
+    await request(app)
+      .get(`/users/${createdUser.id}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(404);
   });
 
   test('should return 404 when user does not exist', async () => {
     const nonExistentId = createdUser.id + 1000;
     const response = await request(app)
       .delete(`/users/${nonExistentId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404)
       .expect('Content-Type', /json/);
 

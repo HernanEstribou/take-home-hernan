@@ -12,10 +12,6 @@ const idSchema = Joi.number().integer().positive().required();
 
 // Ruta: GET /users
 router.get('/', authenticate, async (req, res) => {
-  // #swagger.tags = ['Users']
-  // #swagger.summary = 'Get all users'
-  // #swagger.description = 'Retrieves a list of all users from the database'
-
   try {
     const users = await usersService.getAllUsers();
     const usersDto = users.map((user) => new UserResponseDto(user));
@@ -30,10 +26,6 @@ router.get('/', authenticate, async (req, res) => {
 
 // Ruta: GET /users/:id
 router.get('/:id', authenticate, async (req, res) => {
-  // #swagger.tags = ['Users']
-  // #swagger.summary = 'Get user by ID'
-  // #swagger.description = 'Retrieves a specific user by their ID'
-
   try {
     const { error } = idSchema.validate(req.params.id);
     if (error) {
@@ -58,16 +50,6 @@ router.get('/:id', authenticate, async (req, res) => {
 
 // Ruta: POST /users
 router.post('/', async (req, res) => {
-  // #swagger.tags = ['Users']
-  // #swagger.summary = 'Create a new user'
-  // #swagger.description = 'Creates a new user with email and password'
-  /* #swagger.parameters['body'] = {
-      in: 'body',
-      description: 'User information',
-      required: true,
-      schema: { $ref: '#/definitions/CreateUser' }
-  } */
-
   const { email, password } = req.body;
 
   try {
@@ -95,16 +77,6 @@ router.post('/', async (req, res) => {
 
 // Ruta: PUT /users/:id
 router.put('/:id', authenticate, async (req, res) => {
-  // #swagger.tags = ['Users']
-  // #swagger.summary = 'Update a user'
-  // #swagger.description = 'Updates an existing user with new email and password'
-  /* #swagger.parameters['body'] = {
-      in: 'body',
-      description: 'Updated user information',
-      required: true,
-      schema: { $ref: '#/definitions/UpdateUser' }
-  } */
-
   const { email, password } = req.body;
 
   try {
@@ -148,10 +120,6 @@ router.put('/:id', authenticate, async (req, res) => {
 
 //Ruta: DELETE /users/:id
 router.delete('/:id', authenticate, async (req, res) => {
-  // #swagger.tags = ['Users']
-  // #swagger.summary = 'Delete a user'
-  // #swagger.description = 'Deletes a user by their ID'
-
   try {
     const { error } = idSchema.validate(req.params.id);
     if (error) {

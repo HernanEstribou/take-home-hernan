@@ -15,6 +15,15 @@ class UpdateNotificationDto {
     recipient: Joi.string().required(),
   });
 
+  static swaggerSchema() {
+    return {
+      title: 'Updated title',
+      content: 'Updated content',
+      channel: 'email',
+      recipient: 'user@example.com',
+    };
+  }
+
   validate() {
     const { error } = UpdateNotificationDto.notificationSchema.validate(
       {

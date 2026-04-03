@@ -15,6 +15,15 @@ class CreateNotificationDto {
     recipient: Joi.string().required(),
   });
 
+  static swaggerSchema() {
+    return {
+      title: 'Welcome',
+      content: 'Your notification content',
+      channel: 'email',
+      recipient: 'user@example.com',
+    };
+  }
+
   validate() {
     const { error } = CreateNotificationDto.notificationSchema.validate(
       {
