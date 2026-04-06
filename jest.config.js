@@ -12,5 +12,4 @@ export default {
   testTimeout: 10000, // 10 segundos por test (default: 5s)
   globalSetup: './test/setup.js',
   globalTeardown: './test/teardown.js',
-  setupFiles: ['dotenv/config'],
 };

@@ -1,5 +1,13 @@
 import { PrismaClient } from '../src/generated/prisma/index.js';
 import jwt from 'jsonwebtoken';
+import { config } from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+config({ path: resolve(__dirname, '../.env.test'), override: true });
 
 const prisma = new PrismaClient();
 
