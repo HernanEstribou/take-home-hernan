@@ -12,6 +12,7 @@ config({ path: resolve(__dirname, '../.env.test'), override: true });
 const prisma = new PrismaClient();
 
 export async function cleanDatabase() {
+  await prisma.notificationDelivery.deleteMany({});
   await prisma.notification.deleteMany({});
   await prisma.user.deleteMany({});
 }
