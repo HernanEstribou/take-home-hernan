@@ -66,9 +66,21 @@ const deleteOneNotification = async ({ id, userId }) => {
   return deletedNotification;
 };
 
+const createDelivery = async ({ notification_id, channel, state, details }) => {
+  return await prisma.notificationDelivery.create({
+    data: {
+      notification_id,
+      channel,
+      state,
+      details,
+    },
+  });
+};
+
 export {
   getAllNotifications,
   createNewNotification,
   updateOneNotification,
   deleteOneNotification,
+  createDelivery,
 };

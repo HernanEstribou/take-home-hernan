@@ -11,7 +11,7 @@ class CreateNotificationDto {
   static notificationSchema = Joi.object({
     title: Joi.string().required(),
     content: Joi.string().required(),
-    channel: Joi.string().required(),
+    channel: Joi.string().valid('email', 'sms', 'push').required(),
     recipient: Joi.string().required(),
   });
 

@@ -1,4 +1,5 @@
 import * as notificationsRepository from './notifications.repository.js';
+import { getChannel } from './channels/channel.factory.js';
 
 const getAllNotifications = async (id) => {
   const response = await notificationsRepository.getAllNotifications(id);
@@ -7,10 +8,21 @@ const getAllNotifications = async (id) => {
 };
 
 const createNewNotification = async (notificationData) => {
-  const response =
+  const notification =
     await notificationsRepository.createNewNotification(notificationData);
 
-  return response;
+  const channel = getChannel(notificationData.channel);
+
+  const result = await channel.send(notification);
+
+  await notificationsRepository.createDelivery({
+    notification_id: notification.id,
+    channel: notificationData.channel,
+    state: result.state,
+    details: result.details,
+  });
+
+  return notification;
 };
 
 const updateOneNotification = async (notificationData) => {
