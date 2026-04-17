@@ -7,7 +7,9 @@ import { dirname, resolve } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-config({ path: resolve(__dirname, '../.env.test'), override: true });
+if (!process.env.CI) {
+  config({ path: resolve(__dirname, '../.env.test'), override: true });
+}
 
 const prisma = new PrismaClient();
 

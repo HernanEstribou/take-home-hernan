@@ -6,8 +6,11 @@ import { execSync } from 'child_process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Cargar variables de entorno de test (override: true para sobreescribir cualquier DATABASE_URL heredada del entorno)
-config({ path: resolve(__dirname, '../.env.test'), override: true });
+// En CI (CircleCI setea CI=true automáticamente), usar las variables del entorno
+// En local, siempre cargar .env.test con override para evitar usar base de datos de producción
+if (!process.env.CI) {
+  config({ path: resolve(__dirname, '../.env.test'), override: true });
+}
 
 // Setup global antes de todos los tests
 export default async function globalSetup() {
